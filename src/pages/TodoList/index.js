@@ -1,25 +1,60 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { MdEdit } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import axios from 'axios';
 
 const TodoList = (props) => {
-const todos=props.todos;
-    const [completed, setCompleted] = useState(false)
+    
+const todos=props.todoData;
+
+//console.log(todos)
+
+    
+const handleCheckbox = async(id) => {
+    
+
+    const updatetodo = await axios.put(`/api/update-todo?id=${id}`, {
+        status: "completed"
+    });
+    
+}
+
+
+
     return (
-    <div>
+    <div className='m-8'>
         {todos?.map((todo,i)=>(
-            <div key={todo.id}>
-                <form>
-                    <input type='checkbox'
-                    id='completed'
-                    value={completed}
-                    onChange={(e)=>setCompleted(e.target.completed)}
-                    className=' w-6 h-6 rounded-full '
-                    />
-                </form>
-                <p>{todo.todo}</p>
-            </div>
+           todo.status === "inCompleted" &&  
+            <div key={todo.id} className='flex justify-between h-10 w-96 border-2 mb-4 rounded-sm p-2'>
+           <div className='flex'>
+
+               {todo.status === "completed" &&    <button  className={"text-green-500"}>
+                <IoCheckmarkCircleSharp />
+           
+           </button>}
+
+           
+           {todo.status  === "inCompleted" && <button  onClick={()=>handleCheckbox(todo.id)} className={"text-orange-500"}>
+               <MdOutlineRadioButtonUnchecked />
+           
+           </button>}
+
+
+
+      
+           <p className='ml-4 text-sm'>{todo.todo}</p> </div>       
+           <div>
+           <button className='mr-2 text-green-600'><MdEdit /></button>
+           <button className='text-red-600'><RiDeleteBin6Line /></button>
+           </div>
+       </div>
         ))}
     </div>
     )
 }
+
+
 
 export default TodoList
