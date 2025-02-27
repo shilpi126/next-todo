@@ -11,6 +11,12 @@ const todos=props.todoData;
 
 //console.log(todos)
 
+
+const handleDeleteTodo = async(id) =>{
+
+    const deletetodo = await axios.delete(`/api/delete-todo?id=${id}`);
+}
+
     
 const handleCheckbox = async(id) => {
     
@@ -47,7 +53,7 @@ const handleCheckbox = async(id) => {
            <p className='ml-4 text-sm'>{todo.todo}</p> </div>       
            <div>
            <button className='mr-2 text-green-600'><MdEdit /></button>
-           <button className='text-red-600'><RiDeleteBin6Line /></button>
+           <button onClick={()=>handleDeleteTodo(todo.id)}  className='text-red-600'><RiDeleteBin6Line /></button>
            </div>
        </div>
         ))}
